@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" type="module"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="p-4">
+            <form >
+                <div class="input-group mb-4">
+                    <select class="form-select felx-grow-0 " style="width: 120px;">
+                        <option value="GET" selected>GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="PATCH">PATCH</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                    <input required class="form-control felx-grow-1" type="url" placeholder="https://example.com"/>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="query-params-tab" data-bs-toggle="tab" data-bs-target="#query-params" type="button" role="tab" aria-controls="query-params" aria-selected="true" >Query Params</button>
+                            <button class="nav-link" id="request-headers-tab" data-bs-toggle="tab" data-bs-target="#request-headers" type="button" role="tab" aria-controls="request-headers" aria-selected="false" >Headers </button>
+                            <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button" role="tab" aria-controls="json" aria-selected="false" >Json</button>
+
+                        </li>
+                    </ul>
+                
+
+                <div class="tab-content p-3 border border-top-0">
+                    <div class="tab-pane fade show active " id="query-params" role="tabpanel" aria-labelledby="query-params-tab">
+                        <div data-query-params></div>
+                        <button data-add-query-param-btn class="mt-2 btn btn-outline-success" type="button">Add</button>
+                    </div>
+
+                     <div class="tab-pane fade " id="request-headers" role="tabpanel" aria-labelledby="request-headers-tab">
+                        <div data-request-headers></div>
+                        <button data-add-request-header-btn class="mt-2 btn btn-outline-success" type="button">Add</button>
+                    </div>
+
+                     <div class="tab-pane fade " id="json" role="tabpanel" aria-labelledby="json-tab">
+                        <div data-json></div>
+                        <div data-json-request-body class="overflow-auto  " style="max-height: 200px;" ></div>
+                    </div>
+
+                </div>
+
+                
+            </form>
+    </div>
+
+    <template data-key-value-template>
+        <div class="input-group my-2" data-key-value-pair>
+            <input type="text" data-key class="=form-control" placeholder="Key"/>
+            <input type="text" data-value class="=form-control" placeholder="Value"/>
+            <button type="button" data-remove-btn class="btn btn-outline-danger">Remove</button>
+        </div>
+    </template>
+</body>
+</html>
