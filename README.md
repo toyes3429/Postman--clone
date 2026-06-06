@@ -77,6 +77,7 @@ PostMan-Clone/
 ├── package-lock.json
 ├── .gitignore
 └── README.md
+└── SetupEditor.js
 ```
 
 ## Learning Outcomes
