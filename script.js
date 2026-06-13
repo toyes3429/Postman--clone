@@ -1,8 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import axios, { formToJSON } from 'axios'
+import axios from 'axios'
 import prettybytes from "pretty-bytes";
 import setupEditors from "./setupEditor";
+import parseCurl from "parse-curl";
 
 const queryParamsConatiner=document.querySelector('[data-query-params]');
 const requestHeadersConatiner=document.querySelector('[data-request-headers]');
@@ -22,6 +23,14 @@ requestHeadersConatiner.append(createKeyValuePair());
 
 
 const form = document.querySelector('form');
+
+const runCurlBtn =
+    document.querySelector('[data-run-curl]');
+
+runCurlBtn?.addEventListener(
+    'click',
+    runCurlRequest
+);
 
 axios.interceptors.request.use((request)=>{
     request.customData=request.customData || {};
@@ -63,16 +72,12 @@ form.addEventListener('submit', e => {
     })
     .catch(e => e)
     .then(response => {
-        document
-            .querySelector('[data-response-section]')
-            .classList.remove('d-none');
-
-        updateResponseDetails(response);
-        updateResponseEditor(response.data);
-        updateResponseHeaders(response.headers);
-
-        console.log(response);
-    });
+    showResponse(response);
+    updateCurlStatus(
+    "success",
+    `Request completed successfully (${response.status})`
+);
+});
 });
 
 function updateResponseDetails(response){
@@ -82,6 +87,18 @@ function updateResponseDetails(response){
         JSON.stringify(response.data).length + JSON.stringify(response.headers).length
     );
 
+}
+function showResponse(response){
+
+    document
+        .querySelector('[data-response-section]')
+        .classList.remove('d-none');
+
+    updateResponseDetails(response);
+    updateResponseEditor(response.data);
+    updateResponseHeaders(response.headers);
+
+    console.log(response);
 }
 function updateResponseHeaders(headers){
     responseHeadersContainer.innerHTML = "";
@@ -93,6 +110,17 @@ function updateResponseHeaders(headers){
         valueElement.textContent=value;
         responseHeadersContainer.append(valueElement);
     })
+}
+function updateCurlStatus(type, message){
+
+    const status =
+        document.querySelector('[data-curl-status]');
+
+    status.innerHTML = `
+        <div class="alert alert-${type} py-2 mb-0">
+            ${message}
+        </div>
+    `;
 }
 
 function KeyValuePairsToObject(container){
@@ -112,4 +140,85 @@ function createKeyValuePair(){
         e.target.closest('[data-key-value-pair]').remove();
     })
     return element;
+}
+const themeBtn =
+    document.querySelector('[data-theme-toggle]');
+
+themeBtn.addEventListener('click', () => {
+
+    const body = document.body;
+
+    const current =
+        body.getAttribute('data-bs-theme');
+
+    body.setAttribute(
+        'data-bs-theme',
+        current === 'dark'
+            ? 'light'
+            : 'dark'
+    );
+});
+
+async function runCurlRequest(){
+
+    const btn =
+        document.querySelector('[data-run-curl]');
+
+    btn.disabled = true;
+    btn.textContent = "Running...";
+
+    const curlText =
+        document.querySelector('[data-curl-input]').value;
+        
+        updateCurlStatus(
+    "info",
+    "Executing request..."
+);
+
+    try{
+
+        const parsed =
+            parseCurl(curlText);
+
+        console.log(parsed);
+
+        const response =
+            await axios({
+
+                url: parsed.url,
+
+                method:
+                    parsed.method || "GET",
+
+                headers:
+                    parsed.header || {},
+
+                data:
+                    parsed.body || {}
+
+            });
+
+        showResponse(response);
+        updateCurlStatus(
+    "success",
+    `Request completed successfully (${response.status})`
+);
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        updateCurlStatus(
+    "danger",
+    "Invalid cURL command"
+);
+
+    }
+    finally{
+
+        btn.disabled = false;
+        btn.textContent = "Run cURL";
+
+    }
 }

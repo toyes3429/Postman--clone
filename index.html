@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="p-4">
-            <form form>
+            <form   >
                 <div class="input-group mb-4">
                     <select class="form-select felx-grow-0 " style="width: 120px;" data-select>
                         <option value="GET" selected>GET</option>
@@ -18,8 +18,70 @@
                         <option value="DELETE">DELETE</option>
                     </select>
                     <input data-url required class="form-control felx-grow-1" type="url" placeholder="https://example.com"/>
-                    <button type="submit" class="btn btn-primary">Send</button>
+                   <button type="submit" class="btn btn-primary">Send</button>
+
+<button
+    type="button"
+    class="btn btn-outline-secondary"
+    data-bs-toggle="collapse"
+    data-bs-target="#curlRunner"
+>
+    cURL
+</button>
+
+<button
+    type="button"
+    class="btn btn-outline-secondary d-flex align-items-center justify-content-center"
+    data-theme-toggle
+    style="width: 48px;"
+>
+    Dark Mode
+</button>
                     </div>
+
+                    <div class="collapse mt-3" id="curlRunner">
+    <div class="card">
+
+    <div class="card-header">
+
+        cURL Runner
+
+    </div>
+
+    <div class="card-body">
+
+        <textarea
+        class="form-control"
+        rows="5"
+        data-curl-input
+        placeholder="Paste cURL command here"
+    ></textarea>
+    <div class="d-flex justify-content-between align-items-center mt-2">
+
+    <small class="text-muted">
+        Example: curl https://jsonplaceholder.typicode.com/users
+    </small>
+
+    <button
+        type="button"
+        class="btn btn-primary"
+        data-run-curl
+    >
+        Run cURL
+    </button>
+
+</div>
+<div
+    class="mt-2"
+    data-curl-status
+></div>
+<hr class="my-4">
+
+        
+    </div>
+
+</div>
+</div>
 
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -97,8 +159,8 @@
 
     <template data-key-value-template>
         <div class="input-group my-2" data-key-value-pair>
-            <input type="text" data-key class="=form-control" placeholder="Key"/>
-            <input type="text" data-value class="=form-control" placeholder="Value"/>
+            <input type="text" data-key class="form-control" placeholder="Key"/>
+            <input type="text" data-value class="form-control" placeholder="Value"/>
             <button type="button" data-remove-btn class="btn btn-outline-danger">Remove</button>
         </div>
     </template>
